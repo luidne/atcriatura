@@ -23,7 +23,13 @@ export default function Maps(props) {
     return (
       <View style={{ flex: 1 }}>        
         <MapView
-          style={{ flex: 1, zIndex: 1 }}>
+          style={{ flex: 1, zIndex: 1 }}
+          initialRegion={{
+            latitude: coordinateInitial[1],
+            longitude: coordinateInitial[0],
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          }}>
         </MapView>
       </View>
     );

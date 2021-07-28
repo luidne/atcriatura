@@ -11,7 +11,7 @@ import * as React from 'react';
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import TabOneScreen from '../screens/TabOneScreen';
-import TabTwoScreen from '../screens/TabTwoScreen';
+import VisitasScreen from '../screens/VisitasScreen';
 import NotificacoesScreen from '../screens/notificacoes';
 import MapaScreen from '../screens/mapa';
 import { BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
@@ -34,7 +34,7 @@ export default function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="Visitas"
-        component={TabTwoNavigator}
+        component={TabVisitasNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-home-outline" color={color} />,
         }}
@@ -49,7 +49,7 @@ export default function BottomTabNavigator() {
 
       <BottomTab.Screen
         name="Perfil"
-        component={TabTwoNavigator}
+        component={TabVisitasNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-person-outline" color={color} />,
         }}
@@ -80,17 +80,17 @@ function TabOneNavigator() {
   );
 }
 
-const TabTwoStack = createStackNavigator<TabTwoParamList>();
+const TabVisitasStack = createStackNavigator<TabTwoParamList>();
 
-function TabTwoNavigator() {
+function TabVisitasNavigator() {
   return (
-    <TabTwoStack.Navigator>
-      <TabTwoStack.Screen
-        name="TabTwoScreen"
-        component={TabTwoScreen}
+    <TabVisitasStack.Navigator>
+      <TabVisitasStack.Screen
+        name="TabVisitasScreen"
+        component={VisitasScreen}
         options={{ headerTitle: 'Visitas' }}
       />
-    </TabTwoStack.Navigator>
+    </TabVisitasStack.Navigator>
   );
 }
 

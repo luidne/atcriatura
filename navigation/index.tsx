@@ -12,12 +12,32 @@ import NotFoundScreen from '../screens/NotFoundScreen';
 import { RootStackParamList } from '../types';
 import BottomTabNavigator from './BottomTabNavigator';
 import LinkingConfiguration from './LinkingConfiguration';
+import Analytics from '@react-native-firebase/analytics';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
+  const routeNameRef = React.useRef();
+  const navigationRef = React.useRef();
+
   return (
     <NavigationContainer
+      ref={navigationRef}
       linking={LinkingConfiguration}
-      theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+      onReady={() => (routeNameRef.current = navigationRef.current.getCurrentRoute().name)}
+      onStateChange={async () => {
+        const previousRouteName = routeNameRef.current;
+        const currentRouteName = navigationRef.current.getCurrentRoute().name;
+
+        if (previousRouteName !== currentRouteName) {
+          await Analytics().logScreenView({
+            screen_name: routeNameRef.current,
+            screen_class: routeNameRef.current,
+          });
+        }
+
+        // Save the current route name for later comparison
+        routeNameRef.current = currentRouteName;
+      }}>
       <RootNavigator />
     </NavigationContainer>
   );

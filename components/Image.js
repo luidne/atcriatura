@@ -7,11 +7,14 @@ const ImageCustom = (props) => {
 
         return <Image 
                     source={props.source}
-                    style={{...props.style,...{height: visible.is ? 200 : 1}}}
-                    resizeMode="contain"
+                    style={{...props.style,...{
+                        width: visible.is ? props.style.width : 1,
+                        height: visible.is ? props.style.height : 1
+                    }}}
+                    resizeMode="cover"
                     onLoad={() => {
                         setVisible({is: true});
-                        console.log(`onLoad image successfully`);
+                        // console.log(`onLoad image successfully`);
                     }}
         />;
 
