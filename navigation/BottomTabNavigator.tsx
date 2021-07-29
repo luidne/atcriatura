@@ -10,11 +10,12 @@ import * as React from 'react';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import TabOneScreen from '../screens/TabOneScreen';
+import Perfil from '../screens/PerfilScreen';
 import VisitasScreen from '../screens/VisitasScreen';
 import NotificacoesScreen from '../screens/notificacoes';
 import MapaScreen from '../screens/mapa';
 import { BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
+import PerfilScreen from '../screens/PerfilScreen';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -49,7 +50,7 @@ export default function BottomTabNavigator() {
 
       <BottomTab.Screen
         name="Perfil"
-        component={TabVisitasNavigator}
+        component={PerfilNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-person-outline" color={color} />,
         }}
@@ -105,5 +106,19 @@ function TabMapaNavigator() {
         options={{ headerTitle: 'Mapa' }}
       />
     </TabMapaStack.Navigator>
+  );
+}
+
+const PerfilStack = createStackNavigator();
+
+function PerfilNavigator() {
+  return (
+    <PerfilStack.Navigator>
+      <PerfilStack.Screen
+        name="PerfilScreen"
+        component={PerfilScreen}
+        options={{ headerTitle: 'Perfil' }}
+      />
+    </PerfilStack.Navigator>
   );
 }

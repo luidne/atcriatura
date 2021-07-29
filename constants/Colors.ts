@@ -17,4 +17,5 @@ export default {
     tabIconSelected: tintColorDark,
   },
   blueColor: '#2f95dcff',
+  error: '#f13a59',
 };
