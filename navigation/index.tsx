@@ -46,25 +46,18 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
         ref={navigationRef}
         theme={colorScheme === 'dark' ? myDarkTheme : myLightTheme}
         linking={LinkingConfiguration}
-        onReady={async () => {
-          if(navigationRef)
-            (routeNameRef.current = navigationRef.current.getCurrentRoute().name);
-
-            console.log(`onReady() routeNameRef.current = ${routeNameRef.current}`);
-
-        }}
-        onStateChange={async () => {
+        onStateChange={async (state) => {
           const previousRouteName = routeNameRef.current;
-          const currentRouteName = navigationRef.current.getCurrentRoute().name;
+          const currentRouteName = navigationRef.current.getCurrentRoute(state);
 
           if (previousRouteName !== currentRouteName) {
             await Analytics().logScreenView({
-              screen_name: routeNameRef.current,
-              screen_class: routeNameRef.current,
+              screen_name: currentRouteName.name,
+              screen_class: currentRouteName.name,
             });
           }
 
-          console.log(`onStateChange() routeNameRef.current = ${routeNameRef.current}`);
+          console.log(`onStateChange() routeNameRef.current = ${currentRouteName.name}`);
 
           // Save the current route name for later comparison
           routeNameRef.current = currentRouteName;
@@ -86,7 +79,7 @@ function RootNavigator() {
   function onAuthStateChanged(user) {
     setUser(user);
     if(initializing) setInitializing(false);
-    console.log(`Usuário logado: ${JSON.stringify(user)}`);
+    console.log(`Usuário logado: ${user.email}`);
   }
 
   useEffect(() => {
