@@ -1,5 +1,5 @@
-import React from 'react'
-import { Image, StyleSheet } from 'react-native'
+import React from 'react';
+import { Image, StyleSheet } from 'react-native';
 
 export default function Logo() {
   return <Image source={require('../assets/images/logo_atcriatura.png')} style={styles.image} />
@@ -11,4 +11,4 @@ const styles = StyleSheet.create({
     height: 140,
     marginBottom: 8,
   },
-})
+});

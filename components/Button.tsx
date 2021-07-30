@@ -1,9 +1,10 @@
-import React from 'react'
-import { StyleSheet } from 'react-native'
-import { Button as PaperButton } from 'react-native-paper'
-import { theme } from '../constants/theme'
+import React from 'react';
+import { StyleSheet } from 'react-native';
+import { Button as PaperButton, useTheme } from 'react-native-paper';
 
 export default function Button({ mode, style, ...props }) {
+  const theme = useTheme();
+  
   return (
     <PaperButton
       style={[
@@ -15,7 +16,7 @@ export default function Button({ mode, style, ...props }) {
       mode={mode}
       {...props}
     />
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -29,4 +30,4 @@ const styles = StyleSheet.create({
     fontSize: 15,
     lineHeight: 26,
   },
-})
+});

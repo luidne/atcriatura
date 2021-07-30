@@ -2,12 +2,9 @@ import { useTheme } from '@react-navigation/native';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
 
 import { Text, View } from '../components/Themed';
-import Image from '../components/Image';
 import Auth from '@react-native-firebase/auth';
-import { Provider } from 'react-native-paper/lib/typescript/core/settings';
 import { Avatar, Button } from 'react-native-paper';
 
 export default function PerfilScreen() {

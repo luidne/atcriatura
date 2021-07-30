@@ -26,18 +26,32 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
     ...DarkTheme,
     colors: {
       ...DarkTheme.colors,
-      primary: 'yellow'
+      primary: 'yellow',
+      background: '#000'
+    }
+  };
+  
+  const myLightTheme = {
+    ...DefaultTheme,
+    colors: {
+      ...DefaultTheme.colors,
+      primary: 'orange',
+      background: '#fff',
     }
   };
 
   return (
-    <Provider theme={colorScheme === 'dark' ? myDarkTheme : DefaultTheme}>
+    <Provider theme={colorScheme === 'dark' ? myDarkTheme : myLightTheme}>
       <NavigationContainer
         ref={navigationRef}
+        theme={colorScheme === 'dark' ? myDarkTheme : myLightTheme}
         linking={LinkingConfiguration}
         onReady={async () => {
           if(navigationRef)
             (routeNameRef.current = navigationRef.current.getCurrentRoute().name);
+
+            console.log(`onReady() routeNameRef.current = ${routeNameRef.current}`);
+
         }}
         onStateChange={async () => {
           const previousRouteName = routeNameRef.current;
@@ -49,6 +63,8 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
               screen_class: routeNameRef.current,
             });
           }
+
+          console.log(`onStateChange() routeNameRef.current = ${routeNameRef.current}`);
 
           // Save the current route name for later comparison
           routeNameRef.current = currentRouteName;
