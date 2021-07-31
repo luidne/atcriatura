@@ -4,16 +4,24 @@ import { useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet } from 'react-native';
 
 import { Text, View } from '../components/Themed';
-import Auth from '@react-native-firebase/auth';
-import { Avatar, Button } from 'react-native-paper';
+import TextInput from '../components/TextInput';
+import Image from '../components/Image';
+import Auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import { Button, Title } from 'react-native-paper';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export default function PerfilScreen() {
   const { colors } = useTheme();
   const [isLoading, setIsLoading] = useState(true);
-  const [data, setData] = useState({});
+  const [data, setData] = useState<FirebaseAuthTypes.User | undefined>(undefined);
+  const [displayName, setDisplayName] = useState('');
+  const [textBtnSave, setTxtBtnSave] = useState('Salvar alterações');
 
   useEffect(() => {
-    setData(Auth().currentUser);
+    setIsLoading(true);
+    const user = Auth().currentUser;
+    setData(user);
+    setDisplayName(user.displayName);
     setIsLoading(false);
   }, []);
 
@@ -26,7 +34,7 @@ export default function PerfilScreen() {
       </View>
     );
   } else {
-    if(data == null || data.length === 0) {
+    if(data == null || undefined) {
       return (
         <View style={styles.container}> 
           <View style={styles.center}>
@@ -37,19 +45,44 @@ export default function PerfilScreen() {
     } else {
         return (
           <View style={styles.container}>
-            <View style={{
-              padding: 10,
-              alignItems: 'center',
-            }}>
-              <Avatar.Image
-                  style={styles.itemImg}
-                  source={{uri: data.photoUrl}}
-              />
-              <Text>{data.providerData[0].email}</Text>
-              <Button icon='logout' mode='outlined' onPress={() => {
-                Auth().signOut();
-              }}>Sair</Button>
-            </View>
+            <ScrollView>
+              <View style={{
+                padding: 10,
+                alignItems: 'center',
+              }}>
+                <Image
+                    style={styles.itemImg}
+                    source={{uri: data.photoURL}}
+                />
+                <Title>{data.email}</Title>
+                <Button style={styles.btnLogout} icon='logout' mode='outlined' onPress={() => {
+                  Auth().signOut();
+                }}>Sair</Button>
+              </View>
+              <View style={{paddingHorizontal:10}}>
+                <TextInput
+                  label="Nome"
+                  value={displayName}
+                  onChangeText={setDisplayName}
+                />
+                <Button style={styles.btnSave} icon="pencil" mode='contained' onPress={() => {
+                  setTxtBtnSave('Salvando');
+
+                  const user = Auth().currentUser;
+                  user?.updateProfile({
+                    displayName: displayName
+                  }).then(() => {
+                    console.log(`Sucesso na atualização de perfil.`);
+                    setTxtBtnSave('Salvas com sucesso');
+                  }).catch((error)=> {
+                    console.log(`Erro na atualização de perfil. ${error.message}`);
+                    setTxtBtnSave('Ops! Tente houve um erro.');
+                  });
+                }}>
+                  {textBtnSave}
+                </Button>
+              </View>
+            </ScrollView>
           </View>
         );
     }
@@ -69,5 +102,11 @@ const styles = StyleSheet.create({
     width: 120, 
     height: 120,
     borderRadius: 60,
+  },
+  btnLogout: {
+    margin: 5,
+  },
+  btnSave: {
+    paddingVertical: 5,
   }
 });

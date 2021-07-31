@@ -14,8 +14,8 @@ import { RootStackParamList } from '../types';
 import BottomTabNavigator from './BottomTabNavigator';
 import LoginNavigator from './LoginNavigator';
 import LinkingConfiguration from './LinkingConfiguration';
-import Analytics from '@react-native-firebase/analytics';
-import Auth from '@react-native-firebase/auth';
+import Analytics, { FirebaseAnalyticsTypes } from '@react-native-firebase/analytics';
+import Auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { DarkTheme, DefaultTheme, Provider } from 'react-native-paper';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
@@ -74,12 +74,12 @@ const Stack = createStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
   const [initializing, setInitializing] = useState(true);
-  const [user, setUser] = useState();
+  const [user, setUser] = useState<FirebaseAuthTypes.User | undefined>(undefined);
 
   function onAuthStateChanged(user) {
     setUser(user);
     if(initializing) setInitializing(false);
-    console.log(`Usuário logado: ${user.email}`);
+    console.log(`Usuário logado: ${user.email} (${user.displayName})`);
   }
 
   useEffect(() => {
