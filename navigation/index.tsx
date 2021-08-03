@@ -14,8 +14,9 @@ import { RootStackParamList } from '../types';
 import BottomTabNavigator from './BottomTabNavigator';
 import LoginNavigator from './LoginNavigator';
 import LinkingConfiguration from './LinkingConfiguration';
-import Analytics, { FirebaseAnalyticsTypes } from '@react-native-firebase/analytics';
+import Analytics from '@react-native-firebase/analytics';
 import Auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import Messaging from '@react-native-firebase/messaging';
 import { DarkTheme, DefaultTheme, Provider } from 'react-native-paper';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
@@ -96,6 +97,10 @@ function RootNavigator() {
       </Stack.Navigator>
     );  
   }
+
+  Messaging().requestPermission({
+    provisional: true,
+  });
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
