@@ -6,7 +6,7 @@
 import { NavigationContainer} from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
-import { Appearance, ColorSchemeName } from 'react-native';
+import { Alert, ColorSchemeName } from 'react-native';
 import { useEffect, useState } from 'react';
 
 import NotFoundScreen from '../screens/NotFoundScreen';
@@ -18,6 +18,7 @@ import Analytics from '@react-native-firebase/analytics';
 import Auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import Messaging from '@react-native-firebase/messaging';
 import { DarkTheme, DefaultTheme, Provider } from 'react-native-paper';
+import PushNotification from 'react-native-push-notification';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   const routeNameRef = React.useRef();
@@ -31,7 +32,7 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
       background: '#000'
     }
   };
-  
+
   const myLightTheme = {
     ...DefaultTheme,
     colors: {
@@ -77,30 +78,43 @@ function RootNavigator() {
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState<FirebaseAuthTypes.User | undefined>(undefined);
 
-  function onAuthStateChanged(user) {
-    setUser(user);
-    if(initializing) setInitializing(false);
-    console.log(`Usuário logado: ${user.email} (${user.displayName})`);
-  }
-
   useEffect(() => {
     const subscriber = Auth().onAuthStateChanged(onAuthStateChanged);
     return subscriber;
+  }, [user]);
+
+  useEffect(() => {
+    const unsubscribe = Messaging().onMessage(async (remoteMessage) => {
+      // Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+      PushNotification.localNotification({
+        messageId: remoteMessage.messageId,
+        title: remoteMessage.notification?.title,
+        message: remoteMessage.notification?.body
+      });
+    });
+
+    return unsubscribe;
   }, []);
 
-  if(initializing) return null;
+  function onAuthStateChanged(user) {
+    setUser(user);
+    if (initializing) setInitializing(false);
+    console.log(`Usuário logado: ${user.email} (${user.displayName})`);
 
-  if(!user) {
+    Messaging().requestPermission({
+      provisional: true,
+    });
+  }
+
+  if (initializing) return null;
+
+  if (!user) {
     return (
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Root" component={LoginNavigator} />
       </Stack.Navigator>
-    );  
+    );
   }
-
-  Messaging().requestPermission({
-    provisional: true,
-  });
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>

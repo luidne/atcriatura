@@ -13,6 +13,7 @@
   "dependencies": {
     "@expo/vector-icons": "^12.0.0",
     "@react-native-community/masked-view": "0.1.10",
+    "@react-native-community/push-notification-ios": "^1.8.0",
     "@react-native-firebase/analytics": "^12.3.0",
     "@react-native-firebase/app": "^12.3.0",
     "@react-native-firebase/auth": "^12.3.0",
@@ -38,6 +39,7 @@
     "react-native-hyperlink": "^0.0.19",
     "react-native-maps": "0.28.0",
     "react-native-paper": "^4.9.2",
+    "react-native-push-notification": "^7.4.0",
     "react-native-reanimated": "~2.2.0",
     "react-native-safe-area-context": "3.2.0",
     "react-native-screens": "~3.4.0",
@@ -50,6 +52,12 @@
     "@babel/core": "^7.9.0",
     "@types/react": "~16.9.35",
     "@types/react-native": "~0.63.2",
+    "@typescript-eslint/eslint-plugin": "^4.29.0",
+    "@typescript-eslint/parser": "^4.29.0",
+    "eslint": "^7.32.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-react": "^7.24.0",
+    "eslint-plugin-react-hooks": "^4.2.0",
     "jest-expo": "~41.0.0-beta.0",
     "typescript": "~4.0.0"
   },
