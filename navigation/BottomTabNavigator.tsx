@@ -4,19 +4,15 @@
  */
 
 import { Ionicons } from '@expo/vector-icons';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 
-import Colors from '../constants/Colors';
-import useColorScheme from '../hooks/useColorScheme';
-import VisitasScreen from '../screens/VisitasScreen';
+import VisitasScreen from '../screens/visitas/VisitasScreen';
 import NotificacoesScreen from '../screens/notificacoes';
 import MapaScreen from '../screens/mapa';
 import PerfilScreen from '../screens/PerfilScreen';
 
-import { TabOneParamList, TabTwoParamList } from '../types';
 import { useTheme } from 'react-native-paper';
 
 const BottomTab = createMaterialBottomTabNavigator();
@@ -31,7 +27,7 @@ export default function BottomTabNavigator() {
         screenOptions={{
           tabBarColor: theme.colors.surface,
         }}
-        >
+      >
         <BottomTab.Screen
           name="Avisos"
           component={TabNotificacoesNavigator}
@@ -74,7 +70,7 @@ function TabBarIcon(props: { name: React.ComponentProps<typeof Ionicons>['name']
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
-const TabNotifcacoesStack = createStackNavigator<TabOneParamList>();
+const TabNotifcacoesStack = createStackNavigator();
 
 function TabNotificacoesNavigator() {
   return (
@@ -88,7 +84,7 @@ function TabNotificacoesNavigator() {
   );
 }
 
-const TabVisitasStack = createStackNavigator<TabTwoParamList>();
+const TabVisitasStack = createStackNavigator();
 
 function TabVisitasNavigator() {
   return (
@@ -98,6 +94,11 @@ function TabVisitasNavigator() {
         component={VisitasScreen}
         options={{ headerTitle: 'Visitas' }}
       />
+      {/* <TabVisitasStack.Screen
+        name="FormularioVisitasScreen"
+        component={FormularioVisitaScreen}
+        options={{ headerTitle: 'Formulário de Visita' }}
+      /> */}
     </TabVisitasStack.Navigator>
   );
 }

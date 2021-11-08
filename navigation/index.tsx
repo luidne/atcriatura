@@ -11,7 +11,6 @@ import { useEffect, useState } from 'react';
 
 import NotFoundScreen from '../screens/NotFoundScreen';
 import { RootStackParamList } from '../types';
-import BottomTabNavigator from './BottomTabNavigator';
 import LoginNavigator from './LoginNavigator';
 import LinkingConfiguration from './LinkingConfiguration';
 import Analytics from '@react-native-firebase/analytics';
@@ -19,6 +18,7 @@ import Auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import Messaging from '@react-native-firebase/messaging';
 import { DarkTheme, DefaultTheme, Provider } from 'react-native-paper';
 import PushNotification from 'react-native-push-notification';
+import HomeNavigator from './HomeNavigator';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   const routeNameRef = React.useRef();
@@ -98,8 +98,10 @@ function RootNavigator() {
 
   function onAuthStateChanged(user) {
     setUser(user);
-    if (initializing) setInitializing(false);
-    console.log(`Usuário logado: ${user.email} (${user.displayName})`);
+    if (initializing) {
+      setInitializing(false);
+      console.log(`Usuário logado: ${JSON.stringify(user)}`);
+    }
 
     Messaging().requestPermission({
       provisional: true,
@@ -118,8 +120,7 @@ function RootNavigator() {
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Root" component={BottomTabNavigator} />
-      <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+      <Stack.Screen name="Root" component={HomeNavigator} />
     </Stack.Navigator>
   );
 }
