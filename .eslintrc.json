@@ -24,6 +24,7 @@
         "object-curly-spacing": "off",
         "max-len": "off",
         "require-jsdoc": "off",
-        "comma-dangle": ["error", "only-multiline"]
+        "comma-dangle": ["error", "only-multiline"],
+        "react/display-name": "off"
     }
 }
